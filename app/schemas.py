@@ -1,21 +1,20 @@
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
 from typing import List, Optional
-from enum import Enum as PyEnum
 
-class DiaNocheEnum(PyEnum):
-    dia = "DIA"
-    noche = "NOCHE"
+class Token(BaseModel):
+    access_token: str
+    token_type: str
 
+class TokenData(BaseModel):
+    username: Optional[str] = None
 class IncidenteBase(BaseModel):
     latitud: float
     longitud: float
     intensidad: Optional[float]
     tamano: Optional[float]
-    fecha_adq: datetime
-    hora_adq: str
+    fecha_hora_adq: datetime
     temperatura: Optional[float]
-    dia_noche: DiaNocheEnum
 
 class IncidenteCreate(IncidenteBase):
     id_usuario: int
@@ -31,9 +30,17 @@ class UsuarioBase(BaseModel):
     username: str
     nombre: str
     email: EmailStr
+    telefono: str
+    dni: str
 
 class UsuarioCreate(UsuarioBase):
     password: str
+
+class UsuarioUpdate(BaseModel):
+    username: Optional[str] = None
+    nombre: Optional[str] = None
+    email: Optional[EmailStr] = None
+    telefono: Optional[str] = None
 
 class Usuario(UsuarioBase):
     id: int

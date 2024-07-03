@@ -6,6 +6,5 @@ app = FastAPI()
 
 create_tables()
 
-# Registrar las rutas
-app.include_router(user_routes.router, prefix="/users", tags=["users"])
-app.include_router(incident_routes.router, prefix="/incidents", tags=["incidents"])
+app.include_router(user_routes.router, prefix="/usuarios", tags=["users"])
+app.include_router(incident_routes.router, prefix="/incidentes", tags=["incidents"])

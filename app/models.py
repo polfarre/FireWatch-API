@@ -1,14 +1,9 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, Enum, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-import enum
 from app.db import Base, engine
 
 Base = declarative_base()
-
-class DiaNocheEnum(enum.Enum):
-    dia = "DIA"
-    noche = "NOCHE"
 
 class Usuario(Base):
     __tablename__ = "usuarios"
@@ -17,6 +12,8 @@ class Usuario(Base):
     username = Column(String, unique=True, index=True, nullable=False)
     nombre = Column(String, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
+    telefono = Column(String, unique=True, index=True, nullable=False)
+    dni = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     incidentes = relationship("Incidente", back_populates="usuario")
 
@@ -29,10 +26,8 @@ class Incidente(Base):
     longitud = Column(Float, nullable=False)
     intensidad = Column(Float)
     tamano = Column(Float, nullable=False)
-    fecha_adq = Column(DateTime, nullable=False)
-    hora_adq = Column(String, nullable=False)
+    fecha_hora_adq = Column(DateTime)
     temperatura = Column(Float, nullable=False)
-    dia_noche = Column(Enum(DiaNocheEnum), nullable=False)
 
     usuario = relationship("Usuario", back_populates="incidentes")
 
