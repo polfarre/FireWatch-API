@@ -42,3 +42,7 @@ def read_incidente(incidente_id: int, db: Session = Depends(get_db)):
 #Incidentes que se busquen por latitud y longitud de los extremos del mapa
 
 #logout del usuario
+
+#modificar incidente
+
+#eliminar incidente
