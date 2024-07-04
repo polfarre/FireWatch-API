@@ -101,6 +101,3 @@ def test_delete_user(client):
 
     response = client.get("/usuarios/1")
     assert response.status_code == 404
-
-    
-

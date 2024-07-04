@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Path
 from sqlalchemy.orm import Session
 from app.schemas import IncendioCreate, Incendio, Usuario, IncendioUpdate
 from app.services import incendio_service
@@ -49,11 +49,16 @@ async def leer_incendios(db: Session = Depends(get_db)):
 
 # Solo se puede modificar un incendio si eres el autor de este.
 @router.put("/{incendio_id}", response_model=Incendio)
-async def modificar_incendio(id: int, mod_incendio=IncendioUpdate, current_user: Usuario = Depends(get_current_user), db: Session = Depends(get_db)):
+async def modificar_incendio(
+    incendio_id: int = Path(..., title="ID del incendio a modificar"),
+    mod_incendio: IncendioUpdate = None,
+    current_user: Usuario = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
     if (not current_user):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Tienes que iniciar sesión para poder modificar el incendio.")
     
-    db_incendio = await incendio_service.get_incendio_by_id(db, incendio_id=id)
+    db_incendio = await incendio_service.get_incendio_by_id(db, incendio_id)
 
     if (db_incendio is None):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Ha habido un error al modificar el incendio. Por favor, inténtalo de nuevo más tarde.")
@@ -70,7 +75,7 @@ async def modificar_incendio(id: int, mod_incendio=IncendioUpdate, current_user:
     if (mod_incendio.tamano <= 0):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El tamaño no es válido. Verifique que sea correcto.")
 
-    return await incendio_service.put_incendio(db=db, incendio_id=id, datos_incendio=mod_incendio)
+    return await incendio_service.put_incendio(db, incendio_id, mod_incendio)
 
 # Solo se puede borrar un incendio si eres el autor de este.
 @router.delete("/{incendio_id}", response_model=Incendio)

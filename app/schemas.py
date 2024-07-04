@@ -24,7 +24,6 @@ class IncendioUpdate(BaseModel):
     intensidad: Optional[float] = None
     tamano: Optional[float] = None
     temperatura: Optional[float] = None
-    
 class Incendio(IncendioBase):
     id: int
     id_usuario: int

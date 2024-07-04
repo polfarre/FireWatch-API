@@ -28,7 +28,7 @@ async def post_incendio(db: Session, incendio: IncendioCreate):
     return db_incendio
 
 async def put_incendio(db: Session, incendio_id: int, incendio_mod: IncendioUpdate):
-    db_incendio = get_incendio_by_id(db, incendio_id)
+    db_incendio = await get_incendio_by_id(db, incendio_id)
     db_incendio.intensidad = incendio_mod.intensidad
     db_incendio.tamano = incendio_mod.tamano
     db_incendio.temperatura = incendio_mod.temperatura
