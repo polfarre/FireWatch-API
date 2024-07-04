@@ -7,3 +7,6 @@ psycopg2-binary
 pydantic
 passlib
 python-jose[cryptography]
+pytest
+aiosqlite
+httpx

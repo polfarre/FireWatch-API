@@ -1,5 +1,8 @@
 FROM python:3.10-slim
 
+ENV TESTING=Flase
+ENV PYTHONPATH=/app
+
 WORKDIR /app
 
 COPY requirements.txt .

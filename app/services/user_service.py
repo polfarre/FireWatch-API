@@ -31,7 +31,7 @@ async def create_usuario(db: Session, usuario: UsuarioCreate):
 
 async def modificar_usuario(db: Session, usuario_id: int, datos_nuevos: UsuarioUpdate):
     db_usuario = await get_usuario(db, usuario_id)
-    if db_usuario is None:
+    if not db_usuario:
         return None
     db_usuario.username = datos_nuevos.username
     db_usuario.nombre = datos_nuevos.nombre

@@ -38,3 +38,10 @@ Como instalar el repo por primera vez:
             docker-compose up --build
         2. Verificar que la API esté en funcionamiento:
             Abre tu navegador y navega a http://localhost:8000. Deberías ver la respuesta JSON {"Hello": "World"}.
+
+
+Para ejecutar la API:
+    - sudo docker compose up --build
+
+Para ejecutar los tests de la API:
+    - sudo docker compose -f docker-compose.yml -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from test

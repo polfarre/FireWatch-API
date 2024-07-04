@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  firewatch-db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: firewatch
+      POSTGRES_PASSWORD: firewatchpassword
+      POSTGRES_DB: firewatchdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  firewatch-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: firewatch-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - firewatch-db
+    env_file:
+      - .env
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - TESTING=True
+      - DATABASE_URL=sqlite:///./test.db
+    volumes:
+      - .:/app
+    command: ["pytest", "--maxfail=1", "--disable-warnings", "-v"]
+    depends_on:
+      - firewatch-db
+
+volumes:
+  postgres_data:

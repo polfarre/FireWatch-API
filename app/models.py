@@ -1,9 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
 from app.db import Base, engine
-
-Base = declarative_base()
 
 class Usuario(Base):
     __tablename__ = "usuarios"
