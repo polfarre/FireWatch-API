@@ -17,8 +17,12 @@ class IncendioBase(BaseModel):
     fecha_hora_adq: datetime
     temperatura: Optional[float]
 
-class IncendioCreate(IncendioBase):
-    id_usuario: int
+class IncendioCreate(BaseModel):
+    latitud: float
+    longitud: float
+    intensidad: Optional[float]
+    tamano: Optional[float]
+    temperatura: Optional[float]
 
 class IncendioUpdate(BaseModel):
     intensidad: Optional[float] = None
