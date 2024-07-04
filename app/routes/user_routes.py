@@ -67,14 +67,14 @@ async def update_usuario(usuario_id: int, datos_nuevos: UsuarioUpdate, current_u
     return db_usuario
 
 @router.get("/{usuario_id}", response_model=Usuario)
-async def read_usuario(usuario_id: int, db: Session = Depends(get_db_internal)):
+async def read_usuario(usuario_id: int, db: Session = Depends(get_db)):
     db_usuario = await user_service.get_usuario(db, usuario_id=usuario_id)
     if db_usuario is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No se ha encontrado el usuario.")
     return db_usuario
 
 @router.delete("/{usuario_id}", response_model=Usuario)
-async def delete_usuario(usuario_id: int, current_user: Usuario = Depends(get_current_user), db: Session = Depends(get_db_internal)):
+async def delete_usuario(usuario_id: int, current_user: Usuario = Depends(get_current_user), db: Session = Depends(get_db)):
     db_usuario = await user_service.get_usuario(db, usuario_id=usuario_id)
     if db_usuario is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No se ha podido eliminar la cuenta correctamente.")
