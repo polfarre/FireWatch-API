@@ -3,16 +3,16 @@ from sqlalchemy.orm import Session
 from app.models import Incendio
 from app.schemas import IncendioCreate, IncendioUpdate
 
-def get_incendio_by_lat_long(db: Session, latitud: float, longitud: float):
+async def get_incendio_by_lat_long(db: Session, latitud: float, longitud: float):
     return db.query(Incendio).filter(Incendio.latitud == latitud, Incendio.longitud == longitud).first()
 
-def get_incendio_by_id(db: Session, incendio_id: int):
+async def get_incendio_by_id(db: Session, incendio_id: int):
     return db.query(Incendio).filter(Incendio.id == incendio_id).first()
 
-def get_incendios(db: Session):
+async def get_incendios(db: Session):
     return db.query(Incendio).all()
 
-def post_incendio(db: Session, incendio: IncendioCreate):
+async def post_incendio(db: Session, incendio: IncendioCreate):
     db_incendio = Incendio(
         id_usuario=incendio.id_usuario,
         latitud=incendio.latitud,
@@ -27,7 +27,7 @@ def post_incendio(db: Session, incendio: IncendioCreate):
     db.refresh(db_incendio)
     return db_incendio
 
-def put_incendio(db: Session, incendio_id: int, incendio_mod: IncendioUpdate):
+async def put_incendio(db: Session, incendio_id: int, incendio_mod: IncendioUpdate):
     db_incendio = get_incendio_by_id(db, incendio_id)
     db_incendio.intensidad = incendio_mod.intensidad
     db_incendio.tamano = incendio_mod.tamano

@@ -5,7 +5,7 @@ from datetime import timedelta
 from sqlalchemy.orm import Session
 from app.schemas import UsuarioCreate, Usuario, Token, UsuarioUpdate
 from app.services import user_service
-from app.auth import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, authenticate_user
+from app.auth import create_access_token, authenticate_user
 from app.db import get_db
 from app.auth import get_current_user, get_db_internal
 
@@ -16,7 +16,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     usuario = await authenticate_user(db, form_data.username, form_data.password)
     if not usuario:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciales incorrectas")
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expires = timedelta(minutes=30)
     access_token = create_access_token(data={"sub": usuario.username}, expires_delta=access_token_expires)
     return {"access_token": access_token, "token_type": "bearer"}
 
