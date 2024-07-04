@@ -8,7 +8,8 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
-class IncidenteBase(BaseModel):
+    
+class IncendioBase(BaseModel):
     latitud: float
     longitud: float
     intensidad: Optional[float]
@@ -16,10 +17,15 @@ class IncidenteBase(BaseModel):
     fecha_hora_adq: datetime
     temperatura: Optional[float]
 
-class IncidenteCreate(IncidenteBase):
+class IncendioCreate(IncendioBase):
     id_usuario: int
 
-class Incidente(IncidenteBase):
+class IncendioUpdate(BaseModel):
+    intensidad: Optional[float] = None
+    tamano: Optional[float] = None
+    temperatura: Optional[float] = None
+    
+class Incendio(IncendioBase):
     id: int
     id_usuario: int
 
@@ -44,7 +50,7 @@ class UsuarioUpdate(BaseModel):
 
 class Usuario(UsuarioBase):
     id: int
-    incidentes: List[Incidente] = []
+    incendios: List[Incendio] = []
 
     class Config:
         orm_mode = True

@@ -1,8 +1,7 @@
-import re
 from sqlalchemy.orm import Session
 from app.models import Usuario
 from app.schemas import UsuarioCreate, UsuarioUpdate
-from app.auth import get_password_hash
+from app import auth
 
 async def get_usuario(db: Session, usuario_id: int):
     return db.query(Usuario).filter(Usuario.id == usuario_id).first()
@@ -23,7 +22,7 @@ async def get_usuarios(db: Session, skip: int = 0, limit: int = 10):
     return db.query(Usuario).offset(skip).limit(limit).all()
 
 async def create_usuario(db: Session, usuario: UsuarioCreate):
-    hashed_password = await get_password_hash(usuario.password)
+    hashed_password = await auth.get_password_hash(usuario.password)
     db_usuario = Usuario(username=usuario.username, nombre=usuario.nombre, email=usuario.email, hashed_password=hashed_password, dni = usuario.dni, telefono = usuario.telefono)
     db.add(db_usuario)
     db.commit()

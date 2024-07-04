@@ -15,10 +15,10 @@ class Usuario(Base):
     telefono = Column(String, unique=True, index=True, nullable=False)
     dni = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
-    incidentes = relationship("Incidente", back_populates="usuario")
+    incendios = relationship("Incendio", back_populates="usuario")
 
-class Incidente(Base):
-    __tablename__ = "incidentes"
+class Incendio(Base):
+    __tablename__ = "incendios"
 
     id = Column(Integer, primary_key=True, index=True)
     id_usuario = Column(Integer, ForeignKey('usuarios.id'), nullable=False)
@@ -29,7 +29,7 @@ class Incidente(Base):
     fecha_hora_adq = Column(DateTime)
     temperatura = Column(Float, nullable=False)
 
-    usuario = relationship("Usuario", back_populates="incidentes")
+    usuario = relationship("Usuario", back_populates="incendios")
 
 def create_tables():
     Base.metadata.create_all(engine)
