@@ -21,12 +21,10 @@ def intensidad_valida(intensidad: float):
 async def create_incendio(incendio: IncendioCreate, current_user: Usuario = Depends(get_current_user), db: Session = Depends(get_db)):
     if (not current_user):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="No puedes reportar un incendio si no estás autenticado. Por favor, inicia sesión.")
-    incendio.id_usuario = current_user.id
+    id_usuario = current_user.id
     db_incendio = await incendio_service.get_incendio_by_lat_long(db, latitud=incendio.latitud, longitud=incendio.longitud)
     if db_incendio:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Ya hay un incendio reportado en esta ubicación.")
-    if (not es_espana(incendio.latitud, incendio.longitud)):
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="La ubicación del incendio no está en España.")
     if (not temperatura_valida(incendio.temperatura)):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="La temperatura no es válida. Verifique que sea correcta.")
     if (not intensidad_valida(incendio.intensidad)):
@@ -34,7 +32,7 @@ async def create_incendio(incendio: IncendioCreate, current_user: Usuario = Depe
     if (incendio.tamano <= 0):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El tamaño no es válido. Verifique que sea correcto.")
     
-    return await incendio_service.post_incendio(db=db, incendio=incendio)
+    return await incendio_service.post_incendio(db=db, incendio=incendio, id_usuario=id_usuario)
 
 @router.get("/{incendio_id}", response_model=Incendio)
 async def leer_incendio(incendio_id: int, db: Session = Depends(get_db)):

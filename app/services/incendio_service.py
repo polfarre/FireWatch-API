@@ -12,9 +12,9 @@ async def get_incendio_by_id(db: Session, incendio_id: int):
 async def get_incendios(db: Session):
     return db.query(Incendio).all()
 
-async def post_incendio(db: Session, incendio: IncendioCreate):
+async def post_incendio(db: Session, incendio: IncendioCreate, id_usuario: int):
     db_incendio = Incendio(
-        id_usuario=incendio.id_usuario,
+        id_usuario=id_usuario,
         latitud=incendio.latitud,
         longitud=incendio.longitud,
         intensidad=incendio.intensidad,
