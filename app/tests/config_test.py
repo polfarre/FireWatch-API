@@ -6,17 +6,16 @@ from fastapi.testclient import TestClient
 from app.main import app
 from app.db import Base, get_db
 
-SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
+# Configurar variables de entorno para pruebas
+os.environ["DATABASE_URL"] = "sqlite:///./test.db"
 os.environ["SECRET_KEY"] = "your_secret_key"
 os.environ["ALGORITHM"] = "HS256"
 os.environ["ACCESS_TOKEN_EXPIRE_MINUTES"] = "30"
 
-# Usar conexión SQLite en memoria si estamos en modo de prueba
-if "sqlite" in SQLALCHEMY_DATABASE_URL:
-    engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
-else:
-    engine = create_engine(SQLALCHEMY_DATABASE_URL)
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 
+# Crear un motor de base de datos de prueba
+engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 @pytest.fixture(scope="module")
